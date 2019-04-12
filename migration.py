@@ -1,5 +1,9 @@
+import sys
 import random
 from collections import deque
+
+if sys.version_info[0] > 2:
+    xrange = range
 
 INTERVAL_BLOCKS = 500
 LATENCY_BLOCKS = 10
@@ -28,8 +32,8 @@ def simulate(unmigrated_amount):
         amounts.append(amount)
         unmigrated_amount -= amount
 
-    #print list(amounts)
-    #print len(amounts)
+    #print(list(amounts))
+    #print(len(amounts))
     return amounts
 
 def table(total_amount):
@@ -42,7 +46,7 @@ def table(total_amount):
 
     times = list(times)
     times.sort()
-    print "%5.2f %5.2f %5.2f" % (times[n/10], times[n/2], times[n*9/10])
+    print("%5.2f %5.2f %5.2f" % (times[n//10], times[n//2], times[n*9//10]))
 
 table(1*ZEC)
 table(10*ZEC)
