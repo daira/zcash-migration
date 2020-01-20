@@ -11,7 +11,9 @@ LATENCY_BLOCKS = 10
 DUST_ZATOSHI = 1000000
 (MIN_EXPONENT, MAX_EXPONENT) = (6, 8)
 (MIN_MANTISSA, MAX_MANTISSA) = (1, 99)
-TXNS_PER_BATCH = 5
+INITIAL_TXNS_PER_BATCH = 1
+MAX_TXNS_PER_BATCH = 5
+CHANGE_NOTES = 2
 
 ZEC = 100000000
 
@@ -37,13 +39,23 @@ def simulate(unmigrated_amount):
     #print(len(amounts))
     return amounts
 
+def batches(n):
+    txns_per_batch = INITIAL_TXNS_PER_BATCH
+    b = 0
+    while n > 0:
+        n -= txns_per_batch
+        b += 1
+        txns_per_batch = min(MAX_TXNS_PER_BATCH, txns_per_batch*CHANGE_NOTES)
+
+    return b
+
 def table(total_amount):
     times = deque()
     n = 100000
     for i in xrange(n):
         amounts = simulate(total_amount)
         latency = random.randint(LATENCY_BLOCKS, LATENCY_BLOCKS+INTERVAL_BLOCKS)
-        times.append((div_ceil(len(amounts), TXNS_PER_BATCH)*INTERVAL_BLOCKS + latency)/576.0)
+        times.append((batches(len(amounts))*INTERVAL_BLOCKS + latency)*1.0/BLOCKS_PER_DAY)
 
     times = list(times)
     times.sort()
