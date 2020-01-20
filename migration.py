@@ -5,6 +5,7 @@ from collections import deque
 if sys.version_info[0] > 2:
     xrange = range
 
+BLOCKS_PER_DAY = 48*24 # post-Blossom
 INTERVAL_BLOCKS = 500
 LATENCY_BLOCKS = 10
 DUST_ZATOSHI = 1000000
